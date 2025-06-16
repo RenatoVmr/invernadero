@@ -5,11 +5,18 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 
-const app = express();
+const PUERTO = process.env.PORT || 5000;
 
-// Ruta principal: sirve tu archivo index.html desde /public
+app.use(express.static('public')); // Sirve archivos estáticos
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // o inicio.html
+});
+
+// tus rutas /login, /api/sensores ya definidas...
+
+app.listen(PUERTO, () => {
+  console.log(`Servidor iniciado en el puerto ${PUERTO}`);
 });
 
 // Middleware
@@ -115,9 +122,7 @@ app.get('/api/sensores', async (req, res) => {
 
 
 
-const PUERTO = process.env.PORT || 5000;
 
-app.listen(PUERTO, () => {
-  console.log(`Servidor iniciado en el puerto ${PUERTO}`);
-});
+
+
 
