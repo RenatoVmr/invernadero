@@ -7,6 +7,10 @@ const { Pool } = require('pg');
 
 const app = express();
 
+// Ruta principal: sirve tu archivo index.html desde /public
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
