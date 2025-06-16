@@ -1,7 +1,9 @@
+require('dotenv').config(); // Cargar variables de entorno desde .env (solo en desarrollo)
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const { Pool } = require('pg'); // Usamos PostgreSQL ahora
+const { Pool } = require('pg');
 
 const app = express();
 const PUERTO = process.env.PORT || 5000;
@@ -11,12 +13,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Configuración de conexión a PostgreSQL (Render)
+// Configuración de conexión a PostgreSQL usando variables de entorno
 const pool = new Pool({
-  user: 'invernadero_x2wt_user',
-  host: 'dpg-d167pnodl3ps738f3me0-a.oregon-postgres.render.com',
-  database: 'invernadero_x2wt',
-  password: 'wy3AaWGuijtgfUPNXKMAuKxzOCrJPwOm',
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
   port: 5432,
   ssl: {
     rejectUnauthorized: false
@@ -60,10 +62,9 @@ app.post('/api/sensores', async (req, res) => {
       VALUES ($1, $2, $3, $4)
     `;
 
-    // Si no se envía fecha, usamos la actual
     let fechaFinal = ultimoRiego;
     if (!fechaFinal || fechaFinal.toLowerCase() === 'nunca') {
-      fechaFinal = new Date().toISOString(); // ISO 8601, aceptado por PostgreSQL
+      fechaFinal = new Date().toISOString();
     }
 
     await ejecutarQuery(query, [
@@ -108,12 +109,6 @@ app.get('/api/sensores', async (req, res) => {
   }
 });
 
-
-git remote add origin https://github.com/RenatoVmr/invernadero.git
-git branch -M main
-git push -u origin main
-
 app.listen(PUERTO, () => {
   console.log(`Servidor iniciado en http://localhost:${PUERTO}`);
 });
-
