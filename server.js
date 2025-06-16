@@ -7,6 +7,8 @@ const { Pool } = require('pg');
 
 const PUERTO = process.env.PORT || 5000;
 
+const app = express();
+
 app.use(express.static('public')); // Sirve archivos estáticos
 
 app.get('/', (req, res) => {
@@ -18,7 +20,6 @@ app.get('/', (req, res) => {
 app.listen(PUERTO, () => {
   console.log(`Servidor iniciado en el puerto ${PUERTO}`);
 });
-
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -119,9 +120,6 @@ app.get('/api/sensores', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener datos' });
   }
 });
-
-
-
 
 
 
