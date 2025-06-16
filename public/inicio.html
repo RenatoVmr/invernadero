@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel Plantita - Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e0f7e9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: #2e7d32;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .valor {
+      font-size: 36px;
+      margin-top: 12px;
+      color: #1b5e20;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .valor.actualizado {
+      color: #388e3c;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="card">
+      Humedad del Suelo
+      <div id="humedadAmbiente" class="valor">--%</div>
+    </div>
+    <div class="card">
+      Temperatura
+      <div id="temperatura" class="valor">--°C</div>
+    </div>
+    <div class="card">
+      Humedad del ambiente
+      <div id="humedadSuelo" class="valor">--%</div>
+    </div>
+    <div class="card">
+      Último riego registrado
+      <div id="ultimoRiego" class="valor">--</div>
+    </div>
+  </div>
+
+  <script>
+    async function obtenerDatos() {
+      try {
+        const respuesta = await fetch('/api/sensores');
+        const datos = await respuesta.json();
+
+        actualizarCampo('humedadAmbiente', datos.humedadAmbiente + '%');
+        actualizarCampo('temperatura', datos.temperatura + '°C');
+        actualizarCampo('humedadSuelo', datos.humedadSuelo + '%');
+        actualizarCampo('ultimoRiego', datos.ultimoRiego);
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
+      }
+    }
+
+    function actualizarCampo(id, nuevoValor) {
+      const elemento = document.getElementById(id);
+      if (elemento.textContent !== nuevoValor) {
+        elemento.textContent = nuevoValor;
+        elemento.classList.add('actualizado');
+        setTimeout(() => elemento.classList.remove('actualizado'), 500);
+      }
+    }
+
+    obtenerDatos();
+    setInterval(obtenerDatos, 5000);
+  </script>
+</body>
+</html>
