@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 
 const app = express();
-const PUERTO = process.env.PORT || 5000;
+
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -109,4 +109,11 @@ app.get('/api/sensores', async (req, res) => {
   }
 });
 
+
+
+const PUERTO = process.env.PORT || 5000;
+
+app.listen(PUERTO, () => {
+  console.log(`Servidor iniciado en el puerto ${PUERTO}`);
+});
 
