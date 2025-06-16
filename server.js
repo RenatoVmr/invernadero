@@ -12,7 +12,7 @@ const app = express();
 app.use(express.static('public')); // Sirve archivos estáticos
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html')); // o inicio.html
+  res.sendFile(path.join(__dirname, 'public', 'Index.html')); // o inicio.html
 });
 
 // tus rutas /login, /api/sensores ya definidas...
