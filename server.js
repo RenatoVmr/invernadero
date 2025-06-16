@@ -109,3 +109,4 @@ app.get('/api/sensores', async (req, res) => {
   }
 });
 
+console.log(`Servidor iniciado en el puerto ${PUERTO}`);
