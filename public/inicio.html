@@ -2,77 +2,112 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Panel Plantita - Dashboard</title>
+  <title>Dashboard - Planta Inteligente</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #e0f7e9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #dcedc8, #b9f6ca);
+      color: #2e7d32;
+    }
+
+    header {
+      background-color: #1b5e20;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      padding: 20px;
-      width: 100%;
-      max-width: 900px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
     }
 
     .card {
       background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      padding: 24px;
       text-align: center;
-      font-weight: bold;
-      font-size: 18px;
-      color: #2e7d32;
-      transition: transform 0.2s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
     }
 
     .card:hover {
       transform: translateY(-5px);
     }
 
+    .card .icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 10px;
+      color: #4caf50;
+    }
+
+    .titulo {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
     .valor {
       font-size: 36px;
-      margin-top: 12px;
       color: #1b5e20;
-      transition: color 0.3s, transform 0.3s;
+      font-weight: bold;
+      transition: transform 0.3s, color 0.3s;
     }
 
     .valor.actualizado {
-      color: #388e3c;
+      color: #43a047;
       transform: scale(1.05);
     }
   </style>
 </head>
 <body>
+  <header>🌿 Panel de Monitoreo - Planta Inteligente</header>
+
   <div class="grid">
     <div class="card">
-      Humedad del Suelo
+      <div class="icon" data-lucide="cloud-rain"></div>
+      <div class="titulo">Humedad Ambiente</div>
       <div id="humedadAmbiente" class="valor">--%</div>
     </div>
+
     <div class="card">
-      Temperatura
+      <div class="icon" data-lucide="thermometer-sun"></div>
+      <div class="titulo">Temperatura</div>
       <div id="temperatura" class="valor">--°C</div>
     </div>
+
     <div class="card">
-      Humedad del ambiente
+      <div class="icon" data-lucide="droplets"></div>
+      <div class="titulo">Humedad del Suelo</div>
       <div id="humedadSuelo" class="valor">--%</div>
     </div>
+
     <div class="card">
-      Último riego registrado
+      <div class="icon" data-lucide="calendar-clock"></div>
+      <div class="titulo">Último Riego</div>
       <div id="ultimoRiego" class="valor">--</div>
     </div>
   </div>
 
   <script>
+    lucide.createIcons();
+
     async function obtenerDatos() {
       try {
         const respuesta = await fetch('/api/sensores');
@@ -81,7 +116,7 @@
         actualizarCampo('humedadAmbiente', datos.humedadAmbiente + '%');
         actualizarCampo('temperatura', datos.temperatura + '°C');
         actualizarCampo('humedadSuelo', datos.humedadSuelo + '%');
-        actualizarCampo('ultimoRiego', datos.ultimoRiego);
+        actualizarCampo('ultimoRiego', datos.ultimoRiego || '—');
       } catch (error) {
         console.error('Error al obtener datos:', error);
       }
@@ -92,7 +127,7 @@
       if (elemento.textContent !== nuevoValor) {
         elemento.textContent = nuevoValor;
         elemento.classList.add('actualizado');
-        setTimeout(() => elemento.classList.remove('actualizado'), 500);
+        setTimeout(() => elemento.classList.remove('actualizado'), 800);
       }
     }
 
