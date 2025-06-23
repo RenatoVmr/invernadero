@@ -74,6 +74,21 @@
       color: #43a047;
       transform: scale(1.05);
     }
+
+    .qr-section {
+      text-align: center;
+      margin: 40px auto 60px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1b5e20;
+    }
+
+    .qr-section img {
+      margin-top: 12px;
+      border: 4px solid #a5d6a7;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
   </style>
 </head>
 <body>
@@ -103,6 +118,13 @@
       <div class="titulo">Último Riego</div>
       <div id="ultimoRiego" class="valor">--</div>
     </div>
+  </div>
+
+  <!-- QR Section -->
+  <div class="qr-section">
+    Escanea el código QR para acceder al panel desde tu celular:
+    <br />
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://invernadero-f0y2.onrender.com&size=180x180" alt="QR Sistema" />
   </div>
 
   <script>
